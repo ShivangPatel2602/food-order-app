@@ -8,9 +8,11 @@ const defaultCartState = {
 
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
+    //Updates the total cost of the entire order
     const updatedTotalAmount =
       state.totalAmount + action.item.price * action.item.amount;
 
+    //Finding the index of the item that gets added
     const existingCartItemIndex = state.items.findIndex(
       (item) => item.id === action.item.id
     );
@@ -18,6 +20,7 @@ const cartReducer = (state, action) => {
     const existingCartItem = state.items[existingCartItemIndex];
     let updatedItems;
 
+    //Checks if the item is already present in the cart
     if (existingCartItem) {
       const updatedItem = {
         ...existingCartItem,
@@ -26,7 +29,8 @@ const cartReducer = (state, action) => {
 
       updatedItems = [...state.items];
       updatedItems[existingCartItemIndex] = updatedItem;
-    } else {
+    } //If the item is not present, it adds the item
+    else {
       updatedItems = state.items.concat(action.item);
     }
 
@@ -35,6 +39,8 @@ const cartReducer = (state, action) => {
       totalAmount: updatedTotalAmount,
     };
   }
+
+
   if (action.type === "REMOVE") {
     const existingCartItemIndex = state.items.findIndex(
       (item) => item.id === action.id
